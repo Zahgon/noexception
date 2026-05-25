@@ -11,7 +11,7 @@ import com.machinezoo.noexception.*;
  * {@code OptionalToLongBiFunction} is typically obtained from {@link ExceptionHandler#fromToLongBiFunction(ToLongBiFunction)},
  * in which case its return value is empty when the underlying {@link ToLongBiFunction} throws an exception.
  * See <a href="https://noexception.machinezoo.com/">noexception tutorial</a>.
- * 
+ *
  * @param <T>
  *            see {@link ToLongBiFunction}
  * @param <U>
@@ -21,12 +21,13 @@ import com.machinezoo.noexception.*;
  */
 @FunctionalInterface
 public interface OptionalToLongBiFunction<T, U> extends BiFunction<T, U, OptionalLong> {
+
     /**
      * Variation of {@link ToLongBiFunction#applyAsLong(Object, Object)} that returns {@link OptionalLong}.
      * If this {@code OptionalToLongBiFunction} is obtained from {@link ExceptionHandler#fromToLongBiFunction(ToLongBiFunction)},
      * the {@link OptionalLong} will be empty only if the underlying {@link ToLongBiFunction} throws.
      * Otherwise the returned {@link OptionalLong} just wraps the return value of underlying {@link ToLongBiFunction}.
-     * 
+     *
      * @param t
      *            see {@link ToLongBiFunction#applyAsLong(Object, Object)}
      * @param u
@@ -38,11 +39,12 @@ public interface OptionalToLongBiFunction<T, U> extends BiFunction<T, U, Optiona
      */
     @Override
     OptionalLong apply(T t, U u);
+
     /**
      * Converts this {@code OptionalToLongBiFunction} to plain {@link ToLongBiFunction} using default value.
      * The returned {@link ToLongBiFunction} will unwrap present value from the {@link OptionalLong} if possible,
      * or return {@code result} if the {@link OptionalLong} is empty.
-     * 
+     *
      * @param result
      *            default value to return instead of an empty {@link OptionalLong}
      * @return plain {@link ToLongBiFunction} that either unwraps {@link OptionalLong} or returns default value
@@ -50,13 +52,14 @@ public interface OptionalToLongBiFunction<T, U> extends BiFunction<T, U, Optiona
      * @see OptionalLong#orElse(long)
      */
     default ToLongBiFunction<T, U> orElse(long result) {
-        return new DefaultToLongBiFunction<T, U>(this, result);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Converts this {@code OptionalToLongBiFunction} to plain {@link ToLongBiFunction} using fallback {@link LongSupplier}.
      * The returned {@link ToLongBiFunction} will unwrap present value from the {@link OptionalLong} if possible,
      * or fall back to calling {@code source} if the {@link OptionalLong} is empty.
-     * 
+     *
      * @param source
      *            {@link LongSupplier} to query for fallback value when {@link OptionalLong} is empty
      * @return plain {@link ToLongBiFunction} that either unwraps {@link OptionalLong} or falls back to {@code source}
@@ -64,6 +67,6 @@ public interface OptionalToLongBiFunction<T, U> extends BiFunction<T, U, Optiona
      * @see OptionalLong#orElseGet(LongSupplier)
      */
     default ToLongBiFunction<T, U> orElseGet(LongSupplier source) {
-        return new FallbackToLongBiFunction<T, U>(this, source);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -5,14 +5,18 @@ package com.machinezoo.noexception.optional;
 import java.util.function.*;
 
 final class DefaultToDoubleFunction<T> implements ToDoubleFunction<T> {
+
     private final OptionalToDoubleFunction<T> inner;
+
     private final double result;
+
     public DefaultToDoubleFunction(OptionalToDoubleFunction<T> inner, double result) {
         this.inner = inner;
         this.result = result;
     }
+
     @Override
     public double applyAsDouble(T value) {
-        return inner.apply(value).orElse(result);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

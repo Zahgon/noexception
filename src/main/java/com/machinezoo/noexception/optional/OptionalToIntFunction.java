@@ -11,7 +11,7 @@ import com.machinezoo.noexception.*;
  * {@code OptionalToIntFunction} is typically obtained from {@link ExceptionHandler#fromToIntFunction(ToIntFunction)},
  * in which case its return value is empty when the underlying {@link ToIntFunction} throws an exception.
  * See <a href="https://noexception.machinezoo.com/">noexception tutorial</a>.
- * 
+ *
  * @param <T>
  *            see {@link ToIntFunction}
  * @see ExceptionHandler#fromToIntFunction(ToIntFunction)
@@ -19,12 +19,13 @@ import com.machinezoo.noexception.*;
  */
 @FunctionalInterface
 public interface OptionalToIntFunction<T> extends Function<T, OptionalInt> {
+
     /**
      * Variation of {@link ToIntFunction#applyAsInt(Object)} that returns {@link OptionalInt}.
      * If this {@code OptionalToIntFunction} is obtained from {@link ExceptionHandler#fromToIntFunction(ToIntFunction)},
      * the {@link OptionalInt} will be empty only if the underlying {@link ToIntFunction} throws.
      * Otherwise the returned {@link OptionalInt} just wraps the return value of underlying {@link ToIntFunction}.
-     * 
+     *
      * @param value
      *            see {@link ToIntFunction#applyAsInt(Object)}
      * @return {@link OptionalInt} typically wrapping return value of {@link ToIntFunction#applyAsInt(Object)},
@@ -34,11 +35,12 @@ public interface OptionalToIntFunction<T> extends Function<T, OptionalInt> {
      */
     @Override
     OptionalInt apply(T value);
+
     /**
      * Converts this {@code OptionalToIntFunction} to plain {@link ToIntFunction} using default value.
      * The returned {@link ToIntFunction} will unwrap present value from the {@link OptionalInt} if possible,
      * or return {@code result} if the {@link OptionalInt} is empty.
-     * 
+     *
      * @param result
      *            default value to return instead of an empty {@link OptionalInt}
      * @return plain {@link ToIntFunction} that either unwraps {@link OptionalInt} or returns default value
@@ -46,13 +48,14 @@ public interface OptionalToIntFunction<T> extends Function<T, OptionalInt> {
      * @see OptionalInt#orElse(int)
      */
     default ToIntFunction<T> orElse(int result) {
-        return new DefaultToIntFunction<T>(this, result);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Converts this {@code OptionalToIntFunction} to plain {@link ToIntFunction} using fallback {@link IntSupplier}.
      * The returned {@link ToIntFunction} will unwrap present value from the {@link OptionalInt} if possible,
      * or fall back to calling {@code source} if the {@link OptionalInt} is empty.
-     * 
+     *
      * @param source
      *            {@link IntSupplier} to query for fallback value when {@link OptionalInt} is empty
      * @return plain {@link ToIntFunction} that either unwraps {@link OptionalInt} or falls back to {@code source}
@@ -60,6 +63,6 @@ public interface OptionalToIntFunction<T> extends Function<T, OptionalInt> {
      * @see OptionalInt#orElseGet(IntSupplier)
      */
     default ToIntFunction<T> orElseGet(IntSupplier source) {
-        return new FallbackToIntFunction<T>(this, source);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

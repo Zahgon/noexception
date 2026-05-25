@@ -5,11 +5,9 @@ import java.lang.reflect.*;
 import java.util.*;
 
 final class WrappingHandler extends CheckedExceptionHandler {
-	@Override
-	public RuntimeException handle(Exception exception) {
-		Objects.requireNonNull(exception);
-		if (exception instanceof InterruptedException)
-			Thread.currentThread().interrupt();
-		return new UndeclaredThrowableException(exception);
-	}
+
+    @Override
+    public RuntimeException handle(Exception exception) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

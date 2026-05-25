@@ -285,3 +285,8 @@ cython_debug/
 # Not part of standard Eclipse gitignore for some reason.
 .classpath
 
+
+.aider*
+logs/
+.commit0_scripts/
+.github/workflows/

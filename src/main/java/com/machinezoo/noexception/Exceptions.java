@@ -17,38 +17,58 @@ import org.slf4j.*;
  * @see <a href="https://noexception.machinezoo.com/">NoException tutorial</a>
  */
 public final class Exceptions {
+
     private static final Logger logger = LoggerFactory.getLogger(Exceptions.class);
+
     private static final PropagatingHandler propagate = new PropagatingHandler();
+
     @Deprecated
     private static final LoggingHandler log = new LoggingHandler(logger, () -> "Caught exception.");
+
     private static final SilencingHandler silence = new SilencingHandler();
+
     private static final SneakingHandler sneak = new SneakingHandler();
+
     private static final WrappingHandler wrap = new WrappingHandler();
-    private Exceptions() {}
+
+    private Exceptions() {
+    }
+
     /**
      * Returns {@code ExceptionHandler} that propagates (lets through) all exceptions.
      * This exception handler is equivalent to having no exception handler at all.
      * It is useful when switching among several exception handlers at runtime.
-     * 
+     *
      * @return propagating exception handler
      */
-    public static ExceptionHandler propagate() { return propagate; }
+    public static ExceptionHandler propagate() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
     /**
      * Returns {@code ExceptionHandler} that lets all exceptions through.
      * This is an old deprecated alias for {@link #propagate()}.
-     * 
+     *
      * @return pass-through exception handler
      * @deprecated Use {@link #propagate()} instead.
      */
-    @Deprecated public static ExceptionHandler ignore() { return propagate(); }
+    @Deprecated
+    public static ExceptionHandler ignore() {
+        return propagate();
+    }
+
     /**
      * Returns {@code ExceptionHandler} that lets all exceptions through.
      * This is an old deprecated alias for {@link #propagate()}.
-     * 
+     *
      * @return pass-through exception handler
      * @deprecated Use {@link #propagate()} instead.
      */
-    @Deprecated public static ExceptionHandler pass() { return propagate(); }
+    @Deprecated
+    public static ExceptionHandler pass() {
+        return propagate();
+    }
+
     /**
      * Returns {@code ExceptionHandler} that writes all exceptions to common logger.
      * Logs are written to SLF4J logger named after this class.
@@ -60,12 +80,16 @@ public final class Exceptions {
      * <p>
      * No exceptions are allowed through, not even {@code Error}s.
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @return logging exception handler
      * @see #log(Logger)
      * @deprecated Use <a href="https://noexception.machinezoo.com/slf4j">SLF4J extension</a> instead.
      */
-    @Deprecated public static ExceptionHandler log() { return log; }
+    @Deprecated
+    public static ExceptionHandler log() {
+        return log;
+    }
+
     /**
      * Creates {@code ExceptionHandler} that writes all exceptions to the specified {@code logger}.
      * Most application code can use the more convenient {@link #log()} method.
@@ -75,7 +99,7 @@ public final class Exceptions {
      * <p>
      * No exceptions are allowed through, not even {@code Error}s.
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @param logger
      *            where all exceptions are logged
      * @return exception handler with custom logger
@@ -85,7 +109,11 @@ public final class Exceptions {
      * @see #log(Logger, String)
      * @deprecated Use <a href="https://noexception.machinezoo.com/slf4j">SLF4J extension</a> instead.
      */
-    @Deprecated public static ExceptionHandler log(Logger logger) { return new LoggingHandler(logger, () -> "Caught exception."); }
+    @Deprecated
+    public static ExceptionHandler log(Logger logger) {
+        return new LoggingHandler(logger, () -> "Caught exception.");
+    }
+
     /**
      * Creates {@code ExceptionHandler} that writes all exceptions to the specified {@code logger} with the specified {@code message}.
      * If you just need to specify custom logger, use {@link #log(Logger)}.
@@ -96,7 +124,7 @@ public final class Exceptions {
      * <p>
      * No exceptions are allowed through, not even {@code Error}s.
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @param logger
      *            where all exceptions are logged
      * @param message
@@ -108,10 +136,12 @@ public final class Exceptions {
      * @see #log(Logger, Supplier)
      * @deprecated Use <a href="https://noexception.machinezoo.com/slf4j">SLF4J extension</a> instead.
      */
-    @Deprecated public static ExceptionHandler log(Logger logger, String message) {
+    @Deprecated
+    public static ExceptionHandler log(Logger logger, String message) {
         Objects.requireNonNull(message);
         return new LoggingHandler(logger, () -> message);
     }
+
     /**
      * Creates {@code ExceptionHandler} that writes all exceptions to the specified {@code logger} with lazily evaluated {@code message}.
      * If the message does not need lazy evaluation, use the {@link #log(Logger, String)} method.
@@ -122,7 +152,7 @@ public final class Exceptions {
      * <p>
      * No exceptions are allowed through, not even {@code Error}s.
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @param logger
      *            where all exceptions are logged
      * @param message
@@ -133,7 +163,11 @@ public final class Exceptions {
      * @see #log(Logger, String)
      * @deprecated Use <a href="https://noexception.machinezoo.com/slf4j">SLF4J extension</a> instead.
      */
-    @Deprecated public static ExceptionHandler log(Logger logger, Supplier<String> message) { return new LoggingHandler(logger, message); }
+    @Deprecated
+    public static ExceptionHandler log(Logger logger, Supplier<String> message) {
+        return new LoggingHandler(logger, message);
+    }
+
     /**
      * Returns {@code ExceptionHandler} that silently ignores all exceptions.
      * This handler is useful when some code is known to produce junk exceptions.
@@ -143,10 +177,13 @@ public final class Exceptions {
      * <p>
      * No exceptions are allowed through, not even {@code Error}s.
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @return exception handler that ignores all exceptions
      */
-    public static ExceptionHandler silence() { return silence; }
+    public static ExceptionHandler silence() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
     /**
      * Returns {@code CheckedExceptionHandler} that lets through checked exceptions without declaring them.
      * All exceptions are allowed through unmodified, including checked ones, even though no checked exceptions are declared.
@@ -159,11 +196,14 @@ public final class Exceptions {
      * Sneaky throw is implemented using a neat trick with type erasure
      * that persuades java compiler to tolerate throwing undeclared checked exception from specially crafted generic method.
      * The trick is safe. It is legal java code and JVMs do not mind it. It is just considered dirty by some developers.
-     * 
+     *
      * @return exception handler that lets checked exceptions through
      * @see #wrap()
      */
-    public static CheckedExceptionHandler sneak() { return sneak; }
+    public static CheckedExceptionHandler sneak() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
     /**
      * Returns {@code CheckedExceptionHandler} that wraps all checked exceptions.
      * Unchecked exceptions are passed through unmodified.
@@ -174,12 +214,15 @@ public final class Exceptions {
      * Typical usage: {@code Exceptions.wrap().run(() -> my_throwing_lambda)}
      * <p>
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called.
-     * 
+     *
      * @return exception handler that wraps checked exceptions
      * @see #sneak()
      * @see #wrap(Function)
      */
-    public static CheckedExceptionHandler wrap() { return wrap; }
+    public static CheckedExceptionHandler wrap() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
     /**
      * Creates {@code CheckedExceptionHandler} that applies custom wrapper to checked exceptions.
      * Unchecked exceptions are passed through unmodified.
@@ -189,7 +232,7 @@ public final class Exceptions {
      * Typical usage: {@code Exceptions.wrap(MyWrapperException::new).run(() -> my_throwing_lambda)}
      * <p>
      * If {@link InterruptedException} is caught, {@link Thread#interrupt()} is called before invoking the {@code wrapper}.
-     * 
+     *
      * @param wrapper
      *            method converting checked exception into an unchecked one, often just exception constructor reference
      * @return exception handler with custom exception transform
@@ -198,5 +241,7 @@ public final class Exceptions {
      * @see #sneak()
      * @see #wrap()
      */
-    public static CheckedExceptionHandler wrap(Function<Exception, RuntimeException> wrapper) { return new MappingHandler(wrapper); }
+    public static CheckedExceptionHandler wrap(Function<Exception, RuntimeException> wrapper) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

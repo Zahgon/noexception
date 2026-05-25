@@ -5,14 +5,18 @@ package com.machinezoo.noexception.optional;
 import java.util.function.*;
 
 final class DefaultDoubleToIntFunction implements DoubleToIntFunction {
+
     private final OptionalDoubleToIntFunction inner;
+
     private final int result;
+
     public DefaultDoubleToIntFunction(OptionalDoubleToIntFunction inner, int result) {
         this.inner = inner;
         this.result = result;
     }
+
     @Override
     public int applyAsInt(double value) {
-        return inner.apply(value).orElse(result);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

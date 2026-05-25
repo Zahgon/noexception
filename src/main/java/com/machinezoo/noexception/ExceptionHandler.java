@@ -34,7 +34,7 @@ import com.machinezoo.stagean.*;
  * This {@link Optional} is empty in case of exception.
  * Callers can use {@link Optional#orElse(Object)} and {@link Optional#orElseGet(Supplier)} and their
  * equivalents on {@code OptionalX} interfaces to provide fallback values.
- * 
+ *
  * @see <a href="https://noexception.machinezoo.com/">Tutorial</a>
  * @see #handle(Throwable)
  * @see Exceptions
@@ -53,6 +53,7 @@ import com.machinezoo.stagean.*;
  */
 @ApiIssue("Add only/except(Predicate<Throwable>), which return handler that rethrows selected exceptions without passing them to handle().")
 public abstract class ExceptionHandler {
+
     /**
      * Handles exception in a generic way. This method must be defined in a derived class.
      * Several implementations are provided by methods on {@link Exceptions} class.
@@ -65,7 +66,7 @@ public abstract class ExceptionHandler {
      * It can indicate through return value whether it has accepted or rejected the exception.
      * When an exception is rejected, caller of this method is expected to rethrow the exception.
      * All other methods of this class fulfill this requirement.
-     * 
+     *
      * @param exception
      *            the exception to handle
      * @return {@code true} when exception is handled, {@code false} if the exception should be rethrown
@@ -75,11 +76,13 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public abstract boolean handle(Throwable exception);
+
     /**
      * Initialize new {@code ExceptionHandler}.
      */
     protected ExceptionHandler() {
     }
+
     /**
      * Adds a pass-through modifier to this exception handler.
      * If this exception handler performs an action (like logging) and then stops exception propagation,
@@ -96,8 +99,9 @@ public abstract class ExceptionHandler {
      * @return pass-through modification of this exception handler
      */
     public ExceptionFilter passing() {
-        return new PassingFilter(this);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Wraps {@link Runnable} in a try-catch block.
      * <p>
@@ -107,7 +111,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().runnable(() -> my_throwing_lambda)}
-     * 
+     *
      * @param runnable
      *            the {@link Runnable} to wrap, usually a lambda
      * @return wrapper that runs {@code runnable} in a try-catch block
@@ -115,23 +119,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final Runnable runnable(Runnable runnable) {
-        return new CatchingRunnable(runnable);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingRunnable implements Runnable {
+
         private final Runnable runnable;
+
         CatchingRunnable(Runnable runnable) {
             this.runnable = runnable;
         }
+
         @Override
         public void run() {
-            try {
-                runnable.run();
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link Supplier} in a try-catch block.
      * <p>
@@ -141,7 +145,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().supplier(() -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link Supplier}
      * @param supplier
@@ -151,24 +155,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalSupplier<T> supplier(Supplier<T> supplier) {
-        return new CatchingSupplier<T>(supplier);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingSupplier<T> implements OptionalSupplier<T> {
+
         private final Supplier<T> supplier;
+
         CatchingSupplier(Supplier<T> supplier) {
             this.supplier = supplier;
         }
+
         @Override
         public Optional<T> get() {
-            try {
-                return Optional.ofNullable(supplier.get());
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntSupplier} in a try-catch block.
      * <p>
@@ -178,7 +181,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntSupplier(() -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param supplier
      *            the {@link IntSupplier} to wrap, usually a lambda
      * @return wrapper that runs {@code supplier} in a try-catch block
@@ -186,24 +189,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntSupplier fromIntSupplier(IntSupplier supplier) {
-        return new CatchingIntSupplier(supplier);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntSupplier implements OptionalIntSupplier {
+
         private final IntSupplier supplier;
+
         CatchingIntSupplier(IntSupplier supplier) {
             this.supplier = supplier;
         }
+
         @Override
         public OptionalInt get() {
-            try {
-                return OptionalInt.of(supplier.getAsInt());
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongSupplier} in a try-catch block.
      * <p>
@@ -213,7 +215,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongSupplier(() -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param supplier
      *            the {@link LongSupplier} to wrap, usually a lambda
      * @return wrapper that runs {@code supplier} in a try-catch block
@@ -221,24 +223,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongSupplier fromLongSupplier(LongSupplier supplier) {
-        return new CatchingLongSupplier(supplier);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongSupplier implements OptionalLongSupplier {
+
         private final LongSupplier supplier;
+
         CatchingLongSupplier(LongSupplier supplier) {
             this.supplier = supplier;
         }
+
         @Override
         public OptionalLong get() {
-            try {
-                return OptionalLong.of(supplier.getAsLong());
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleSupplier} in a try-catch block.
      * <p>
@@ -248,7 +249,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleSupplier(() -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param supplier
      *            the {@link DoubleSupplier} to wrap, usually a lambda
      * @return wrapper that runs {@code supplier} in a try-catch block
@@ -256,24 +257,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoubleSupplier fromDoubleSupplier(DoubleSupplier supplier) {
-        return new CatchingDoubleSupplier(supplier);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleSupplier implements OptionalDoubleSupplier {
+
         private final DoubleSupplier supplier;
+
         CatchingDoubleSupplier(DoubleSupplier supplier) {
             this.supplier = supplier;
         }
+
         @Override
         public OptionalDouble get() {
-            try {
-                return OptionalDouble.of(supplier.getAsDouble());
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link BooleanSupplier} in a try-catch block.
      * <p>
@@ -283,7 +283,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromBooleanSupplier(() -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param supplier
      *            the {@link BooleanSupplier} to wrap, usually a lambda
      * @return wrapper that runs {@code supplier} in a try-catch block
@@ -291,24 +291,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalBooleanSupplier fromBooleanSupplier(BooleanSupplier supplier) {
-        return new CatchingBooleanSupplier(supplier);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingBooleanSupplier implements OptionalBooleanSupplier {
+
         private final BooleanSupplier supplier;
+
         CatchingBooleanSupplier(BooleanSupplier supplier) {
             this.supplier = supplier;
         }
+
         @Override
         public OptionalBoolean get() {
-            try {
-                return OptionalBoolean.of(supplier.getAsBoolean());
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link Consumer} in a try-catch block.
      * <p>
@@ -318,7 +317,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().consumer(t -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link Consumer}
      * @param consumer
@@ -328,23 +327,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> Consumer<T> consumer(Consumer<T> consumer) {
-        return new CatchingConsumer<T>(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingConsumer<T> implements Consumer<T> {
+
         private final Consumer<T> consumer;
+
         CatchingConsumer(Consumer<T> consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(T t) {
-            try {
-                consumer.accept(t);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntConsumer} in a try-catch block.
      * <p>
@@ -354,7 +353,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntConsumer(v -> my_throwing_lambda)}
-     * 
+     *
      * @param consumer
      *            the {@link IntConsumer} to wrap, usually a lambda
      * @return wrapper that runs {@code consumer} in a try-catch block
@@ -362,23 +361,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final IntConsumer fromIntConsumer(IntConsumer consumer) {
-        return new CatchingIntConsumer(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntConsumer implements IntConsumer {
+
         private final IntConsumer consumer;
+
         CatchingIntConsumer(IntConsumer consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(int value) {
-            try {
-                consumer.accept(value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongConsumer} in a try-catch block.
      * <p>
@@ -388,7 +387,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongConsumer(v -> my_throwing_lambda)}
-     * 
+     *
      * @param consumer
      *            the {@link LongConsumer} to wrap, usually a lambda
      * @return wrapper that runs {@code consumer} in a try-catch block
@@ -396,23 +395,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final LongConsumer fromLongConsumer(LongConsumer consumer) {
-        return new CatchingLongConsumer(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongConsumer implements LongConsumer {
+
         private final LongConsumer consumer;
+
         CatchingLongConsumer(LongConsumer consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(long value) {
-            try {
-                consumer.accept(value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleConsumer} in a try-catch block.
      * <p>
@@ -422,7 +421,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleConsumer(v -> my_throwing_lambda)}
-     * 
+     *
      * @param consumer
      *            the {@link DoubleConsumer} to wrap, usually a lambda
      * @return wrapper that runs {@code consumer} in a try-catch block
@@ -430,23 +429,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final DoubleConsumer fromDoubleConsumer(DoubleConsumer consumer) {
-        return new CatchingDoubleConsumer(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleConsumer implements DoubleConsumer {
+
         private final DoubleConsumer consumer;
+
         CatchingDoubleConsumer(DoubleConsumer consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(double value) {
-            try {
-                consumer.accept(value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link BiConsumer} in a try-catch block.
      * <p>
@@ -456,7 +455,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromBiConsumer((t, u) -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link BiConsumer}
      * @param <U>
@@ -468,23 +467,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U> BiConsumer<T, U> fromBiConsumer(BiConsumer<T, U> consumer) {
-        return new CatchingBiConsumer<T, U>(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingBiConsumer<T, U> implements BiConsumer<T, U> {
+
         private final BiConsumer<T, U> consumer;
+
         CatchingBiConsumer(BiConsumer<T, U> consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(T t, U u) {
-            try {
-                consumer.accept(t, u);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ObjIntConsumer} in a try-catch block.
      * <p>
@@ -494,7 +493,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromObjIntConsumer((t, v) -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link ObjIntConsumer}
      * @param consumer
@@ -504,23 +503,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> ObjIntConsumer<T> fromObjIntConsumer(ObjIntConsumer<T> consumer) {
-        return new CatchingObjIntConsumer<T>(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingObjIntConsumer<T> implements ObjIntConsumer<T> {
+
         private final ObjIntConsumer<T> consumer;
+
         CatchingObjIntConsumer(ObjIntConsumer<T> consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(T t, int value) {
-            try {
-                consumer.accept(t, value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ObjLongConsumer} in a try-catch block.
      * <p>
@@ -530,7 +529,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromObjLongConsumer((t, v) -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link ObjLongConsumer}
      * @param consumer
@@ -540,23 +539,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> ObjLongConsumer<T> fromObjLongConsumer(ObjLongConsumer<T> consumer) {
-        return new CatchingObjLongConsumer<T>(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingObjLongConsumer<T> implements ObjLongConsumer<T> {
+
         private final ObjLongConsumer<T> consumer;
+
         CatchingObjLongConsumer(ObjLongConsumer<T> consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(T t, long value) {
-            try {
-                consumer.accept(t, value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ObjDoubleConsumer} in a try-catch block.
      * <p>
@@ -566,7 +565,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromObjDoubleConsumer((t, v) -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link ObjDoubleConsumer}
      * @param consumer
@@ -576,23 +575,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> ObjDoubleConsumer<T> fromObjDoubleConsumer(ObjDoubleConsumer<T> consumer) {
-        return new CatchingObjDoubleConsumer<T>(consumer);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingObjDoubleConsumer<T> implements ObjDoubleConsumer<T> {
+
         private final ObjDoubleConsumer<T> consumer;
+
         CatchingObjDoubleConsumer(ObjDoubleConsumer<T> consumer) {
             this.consumer = consumer;
         }
+
         @Override
         public void accept(T t, double value) {
-            try {
-                consumer.accept(t, value);
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link Predicate} in a try-catch block.
      * <p>
@@ -602,7 +601,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().predicate(t -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link Predicate}
      * @param predicate
@@ -612,24 +611,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalPredicate<T> predicate(Predicate<T> predicate) {
-        return new CatchingPredicate<T>(predicate);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingPredicate<T> implements OptionalPredicate<T> {
+
         private final Predicate<T> predicate;
+
         CatchingPredicate(Predicate<T> predicate) {
             this.predicate = predicate;
         }
+
         @Override
         public OptionalBoolean test(T t) {
-            try {
-                return OptionalBoolean.of(predicate.test(t));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntPredicate} in a try-catch block.
      * <p>
@@ -639,7 +637,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntPredicate(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param predicate
      *            the {@link IntPredicate} to wrap, usually a lambda
      * @return wrapper that runs {@code predicate} in a try-catch block
@@ -647,24 +645,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntPredicate fromIntPredicate(IntPredicate predicate) {
-        return new CatchingIntPredicate(predicate);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntPredicate implements OptionalIntPredicate {
+
         private final IntPredicate predicate;
+
         CatchingIntPredicate(IntPredicate predicate) {
             this.predicate = predicate;
         }
+
         @Override
         public OptionalBoolean test(int value) {
-            try {
-                return OptionalBoolean.of(predicate.test(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongPredicate} in a try-catch block.
      * <p>
@@ -674,7 +671,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongPredicate(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param predicate
      *            the {@link LongPredicate} to wrap, usually a lambda
      * @return wrapper that runs {@code predicate} in a try-catch block
@@ -682,24 +679,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongPredicate fromLongPredicate(LongPredicate predicate) {
-        return new CatchingLongPredicate(predicate);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongPredicate implements OptionalLongPredicate {
+
         private final LongPredicate predicate;
+
         CatchingLongPredicate(LongPredicate predicate) {
             this.predicate = predicate;
         }
+
         @Override
         public OptionalBoolean test(long value) {
-            try {
-                return OptionalBoolean.of(predicate.test(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoublePredicate} in a try-catch block.
      * <p>
@@ -709,7 +705,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoublePredicate(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param predicate
      *            the {@link DoublePredicate} to wrap, usually a lambda
      * @return wrapper that runs {@code predicate} in a try-catch block
@@ -717,24 +713,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoublePredicate fromDoublePredicate(DoublePredicate predicate) {
-        return new CatchingDoublePredicate(predicate);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoublePredicate implements OptionalDoublePredicate {
+
         private final DoublePredicate predicate;
+
         CatchingDoublePredicate(DoublePredicate predicate) {
             this.predicate = predicate;
         }
+
         @Override
         public OptionalBoolean test(double value) {
-            try {
-                return OptionalBoolean.of(predicate.test(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link BiPredicate} in a try-catch block.
      * <p>
@@ -744,7 +739,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromBiPredicate((t, u) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link BiPredicate}
      * @param <U>
@@ -756,24 +751,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U> OptionalBiPredicate<T, U> fromBiPredicate(BiPredicate<T, U> predicate) {
-        return new CatchingBiPredicate<T, U>(predicate);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingBiPredicate<T, U> implements OptionalBiPredicate<T, U> {
+
         private final BiPredicate<T, U> predicate;
+
         CatchingBiPredicate(BiPredicate<T, U> predicate) {
             this.predicate = predicate;
         }
+
         @Override
         public OptionalBoolean test(T t, U u) {
-            try {
-                return OptionalBoolean.of(predicate.test(t, u));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalBoolean.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link Function} in a try-catch block.
      * <p>
@@ -783,7 +777,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().function(t -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link Function}
      * @param <R>
@@ -795,24 +789,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, R> OptionalFunction<T, R> function(Function<T, R> function) {
-        return new CatchingFunction<T, R>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingFunction<T, R> implements OptionalFunction<T, R> {
+
         private final Function<T, R> function;
+
         CatchingFunction(Function<T, R> function) {
             this.function = function;
         }
+
         @Override
         public Optional<R> apply(T t) {
-            try {
-                return Optional.ofNullable(function.apply(t));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToIntFunction} in a try-catch block.
      * <p>
@@ -822,7 +815,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToIntFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToIntFunction}
      * @param function
@@ -832,24 +825,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalToIntFunction<T> fromToIntFunction(ToIntFunction<T> function) {
-        return new CatchingToIntFunction<T>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToIntFunction<T> implements OptionalToIntFunction<T> {
+
         private final ToIntFunction<T> function;
+
         CatchingToIntFunction(ToIntFunction<T> function) {
             this.function = function;
         }
+
         @Override
         public OptionalInt apply(T value) {
-            try {
-                return OptionalInt.of(function.applyAsInt(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntFunction} in a try-catch block.
      * <p>
@@ -859,7 +851,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <R>
      *            see {@link IntFunction}
      * @param function
@@ -869,24 +861,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <R> OptionalIntFunction<R> fromIntFunction(IntFunction<R> function) {
-        return new CatchingIntFunction<R>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntFunction<R> implements OptionalIntFunction<R> {
+
         private final IntFunction<R> function;
+
         CatchingIntFunction(IntFunction<R> function) {
             this.function = function;
         }
+
         @Override
         public Optional<R> apply(int value) {
-            try {
-                return Optional.ofNullable(function.apply(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntToLongFunction} in a try-catch block.
      * <p>
@@ -896,7 +887,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntToLongFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link IntToLongFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -904,24 +895,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntToLongFunction fromIntToLongFunction(IntToLongFunction function) {
-        return new CatchingIntToLongFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntToLongFunction implements OptionalIntToLongFunction {
+
         private final IntToLongFunction function;
+
         CatchingIntToLongFunction(IntToLongFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalLong apply(int value) {
-            try {
-                return OptionalLong.of(function.applyAsLong(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntToDoubleFunction} in a try-catch block.
      * <p>
@@ -931,7 +921,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntToDoubleFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link IntToDoubleFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -939,24 +929,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntToDoubleFunction fromIntToDoubleFunction(IntToDoubleFunction function) {
-        return new CatchingIntToDoubleFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntToDoubleFunction implements OptionalIntToDoubleFunction {
+
         private final IntToDoubleFunction function;
+
         CatchingIntToDoubleFunction(IntToDoubleFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalDouble apply(int value) {
-            try {
-                return OptionalDouble.of(function.applyAsDouble(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToLongFunction} in a try-catch block.
      * <p>
@@ -966,7 +955,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToLongFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToLongFunction}
      * @param function
@@ -976,24 +965,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalToLongFunction<T> fromToLongFunction(ToLongFunction<T> function) {
-        return new CatchingToLongFunction<T>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToLongFunction<T> implements OptionalToLongFunction<T> {
+
         private final ToLongFunction<T> function;
+
         CatchingToLongFunction(ToLongFunction<T> function) {
             this.function = function;
         }
+
         @Override
         public OptionalLong apply(T value) {
-            try {
-                return OptionalLong.of(function.applyAsLong(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongFunction} in a try-catch block.
      * <p>
@@ -1003,7 +991,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <R>
      *            see {@link LongFunction}
      * @param function
@@ -1013,24 +1001,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <R> OptionalLongFunction<R> fromLongFunction(LongFunction<R> function) {
-        return new CatchingLongFunction<R>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongFunction<R> implements OptionalLongFunction<R> {
+
         private final LongFunction<R> function;
+
         CatchingLongFunction(LongFunction<R> function) {
             this.function = function;
         }
+
         @Override
         public Optional<R> apply(long value) {
-            try {
-                return Optional.ofNullable(function.apply(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongToIntFunction} in a try-catch block.
      * <p>
@@ -1040,7 +1027,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongToIntFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link LongToIntFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -1048,24 +1035,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongToIntFunction fromLongToIntFunction(LongToIntFunction function) {
-        return new CatchingLongToIntFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongToIntFunction implements OptionalLongToIntFunction {
+
         private final LongToIntFunction function;
+
         CatchingLongToIntFunction(LongToIntFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalInt apply(long value) {
-            try {
-                return OptionalInt.of(function.applyAsInt(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongToDoubleFunction} in a try-catch block.
      * <p>
@@ -1075,7 +1061,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongToDoubleFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link LongToDoubleFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -1083,24 +1069,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongToDoubleFunction fromLongToDoubleFunction(LongToDoubleFunction function) {
-        return new CatchingLongToDoubleFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongToDoubleFunction implements OptionalLongToDoubleFunction {
+
         private final LongToDoubleFunction function;
+
         CatchingLongToDoubleFunction(LongToDoubleFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalDouble apply(long value) {
-            try {
-                return OptionalDouble.of(function.applyAsDouble(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToDoubleFunction} in a try-catch block.
      * <p>
@@ -1110,7 +1095,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToDoubleFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToDoubleFunction}
      * @param function
@@ -1120,24 +1105,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalToDoubleFunction<T> fromToDoubleFunction(ToDoubleFunction<T> function) {
-        return new CatchingToDoubleFunction<T>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToDoubleFunction<T> implements OptionalToDoubleFunction<T> {
+
         private final ToDoubleFunction<T> function;
+
         CatchingToDoubleFunction(ToDoubleFunction<T> function) {
             this.function = function;
         }
+
         @Override
         public OptionalDouble apply(T value) {
-            try {
-                return OptionalDouble.of(function.applyAsDouble(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleFunction} in a try-catch block.
      * <p>
@@ -1147,7 +1131,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <R>
      *            see {@link DoubleFunction}
      * @param function
@@ -1157,24 +1141,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <R> OptionalDoubleFunction<R> fromDoubleFunction(DoubleFunction<R> function) {
-        return new CatchingDoubleFunction<R>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleFunction<R> implements OptionalDoubleFunction<R> {
+
         private final DoubleFunction<R> function;
+
         CatchingDoubleFunction(DoubleFunction<R> function) {
             this.function = function;
         }
+
         @Override
         public Optional<R> apply(double value) {
-            try {
-                return Optional.ofNullable(function.apply(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleToIntFunction} in a try-catch block.
      * <p>
@@ -1184,7 +1167,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleToIntFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link DoubleToIntFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -1192,24 +1175,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoubleToIntFunction fromDoubleToIntFunction(DoubleToIntFunction function) {
-        return new CatchingDoubleToIntFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleToIntFunction implements OptionalDoubleToIntFunction {
+
         private final DoubleToIntFunction function;
+
         CatchingDoubleToIntFunction(DoubleToIntFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalInt apply(double value) {
-            try {
-                return OptionalInt.of(function.applyAsInt(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleToLongFunction} in a try-catch block.
      * <p>
@@ -1219,7 +1201,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleToLongFunction(v -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param function
      *            the {@link DoubleToLongFunction} to wrap, usually a lambda
      * @return wrapper that runs {@code function} in a try-catch block
@@ -1227,24 +1209,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoubleToLongFunction fromDoubleToLongFunction(DoubleToLongFunction function) {
-        return new CatchingDoubleToLongFunction(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleToLongFunction implements OptionalDoubleToLongFunction {
+
         private final DoubleToLongFunction function;
+
         CatchingDoubleToLongFunction(DoubleToLongFunction function) {
             this.function = function;
         }
+
         @Override
         public OptionalLong apply(double value) {
-            try {
-                return OptionalLong.of(function.applyAsLong(value));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link UnaryOperator} in a try-catch block.
      * <p>
@@ -1254,7 +1235,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromUnaryOperator(o -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link UnaryOperator}
      * @param operator
@@ -1264,24 +1245,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalUnaryOperator<T> fromUnaryOperator(UnaryOperator<T> operator) {
-        return new CatchingUnaryOperator<T>(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingUnaryOperator<T> implements OptionalUnaryOperator<T> {
+
         private final UnaryOperator<T> operator;
+
         CatchingUnaryOperator(UnaryOperator<T> operator) {
             this.operator = operator;
         }
+
         @Override
         public Optional<T> apply(T operand) {
-            try {
-                return Optional.ofNullable(operator.apply(operand));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntUnaryOperator} in a try-catch block.
      * <p>
@@ -1291,7 +1271,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntUnaryOperator(o -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link IntUnaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1299,24 +1279,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntUnaryOperator fromIntUnaryOperator(IntUnaryOperator operator) {
-        return new CatchingIntUnaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntUnaryOperator implements OptionalIntUnaryOperator {
+
         private final IntUnaryOperator operator;
+
         CatchingIntUnaryOperator(IntUnaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalInt apply(int operand) {
-            try {
-                return OptionalInt.of(operator.applyAsInt(operand));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongUnaryOperator} in a try-catch block.
      * <p>
@@ -1326,7 +1305,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongUnaryOperator(o -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link LongUnaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1334,24 +1313,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongUnaryOperator fromLongUnaryOperator(LongUnaryOperator operator) {
-        return new CatchingLongUnaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongUnaryOperator implements OptionalLongUnaryOperator {
+
         private final LongUnaryOperator operator;
+
         CatchingLongUnaryOperator(LongUnaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalLong apply(long operand) {
-            try {
-                return OptionalLong.of(operator.applyAsLong(operand));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleUnaryOperator} in a try-catch block.
      * <p>
@@ -1361,7 +1339,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleUnaryOperator(o -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link DoubleUnaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1369,24 +1347,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoubleUnaryOperator fromDoubleUnaryOperator(DoubleUnaryOperator operator) {
-        return new CatchingDoubleUnaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleUnaryOperator implements OptionalDoubleUnaryOperator {
+
         private final DoubleUnaryOperator operator;
+
         CatchingDoubleUnaryOperator(DoubleUnaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalDouble apply(double operand) {
-            try {
-                return OptionalDouble.of(operator.applyAsDouble(operand));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link BiFunction} in a try-catch block.
      * <p>
@@ -1396,7 +1373,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromBiFunction((t, u) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link BiFunction}
      * @param <U>
@@ -1410,24 +1387,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U, R> OptionalBiFunction<T, U, R> fromBiFunction(BiFunction<T, U, R> function) {
-        return new CatchingBiFunction<T, U, R>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingBiFunction<T, U, R> implements OptionalBiFunction<T, U, R> {
+
         private final BiFunction<T, U, R> function;
+
         CatchingBiFunction(BiFunction<T, U, R> function) {
             this.function = function;
         }
+
         @Override
         public Optional<R> apply(T t, U u) {
-            try {
-                return Optional.ofNullable(function.apply(t, u));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToIntBiFunction} in a try-catch block.
      * <p>
@@ -1437,7 +1413,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToIntBiFunction((t, u) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToIntBiFunction}
      * @param <U>
@@ -1449,24 +1425,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U> OptionalToIntBiFunction<T, U> fromToIntBiFunction(ToIntBiFunction<T, U> function) {
-        return new CatchingToIntBiFunction<T, U>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToIntBiFunction<T, U> implements OptionalToIntBiFunction<T, U> {
+
         private final ToIntBiFunction<T, U> function;
+
         CatchingToIntBiFunction(ToIntBiFunction<T, U> function) {
             this.function = function;
         }
+
         @Override
         public OptionalInt apply(T t, U u) {
-            try {
-                return OptionalInt.of(function.applyAsInt(t, u));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToLongBiFunction} in a try-catch block.
      * <p>
@@ -1476,7 +1451,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToLongBiFunction((t, u) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToLongBiFunction}
      * @param <U>
@@ -1488,24 +1463,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U> OptionalToLongBiFunction<T, U> fromToLongBiFunction(ToLongBiFunction<T, U> function) {
-        return new CatchingToLongBiFunction<T, U>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToLongBiFunction<T, U> implements OptionalToLongBiFunction<T, U> {
+
         private final ToLongBiFunction<T, U> function;
+
         CatchingToLongBiFunction(ToLongBiFunction<T, U> function) {
             this.function = function;
         }
+
         @Override
         public OptionalLong apply(T t, U u) {
-            try {
-                return OptionalLong.of(function.applyAsLong(t, u));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link ToDoubleBiFunction} in a try-catch block.
      * <p>
@@ -1515,7 +1489,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromToDoubleBiFunction((t, u) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link ToDoubleBiFunction}
      * @param <U>
@@ -1527,24 +1501,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T, U> OptionalToDoubleBiFunction<T, U> fromToDoubleBiFunction(ToDoubleBiFunction<T, U> function) {
-        return new CatchingToDoubleBiFunction<T, U>(function);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingToDoubleBiFunction<T, U> implements OptionalToDoubleBiFunction<T, U> {
+
         private final ToDoubleBiFunction<T, U> function;
+
         CatchingToDoubleBiFunction(ToDoubleBiFunction<T, U> function) {
             this.function = function;
         }
+
         @Override
         public OptionalDouble apply(T t, U u) {
-            try {
-                return OptionalDouble.of(function.applyAsDouble(t, u));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link BinaryOperator} in a try-catch block.
      * <p>
@@ -1554,7 +1527,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromBinaryOperator((l, r) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link BinaryOperator}
      * @param operator
@@ -1564,24 +1537,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalBinaryOperator<T> fromBinaryOperator(BinaryOperator<T> operator) {
-        return new CatchingBinaryOperator<T>(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingBinaryOperator<T> implements OptionalBinaryOperator<T> {
+
         private final BinaryOperator<T> operator;
+
         CatchingBinaryOperator(BinaryOperator<T> operator) {
             this.operator = operator;
         }
+
         @Override
         public Optional<T> apply(T left, T right) {
-            try {
-                return Optional.ofNullable(operator.apply(left, right));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return Optional.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link IntBinaryOperator} in a try-catch block.
      * <p>
@@ -1591,7 +1563,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromIntBinaryOperator((l, r) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link IntBinaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1599,24 +1571,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalIntBinaryOperator fromIntBinaryOperator(IntBinaryOperator operator) {
-        return new CatchingIntBinaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingIntBinaryOperator implements OptionalIntBinaryOperator {
+
         private final IntBinaryOperator operator;
+
         CatchingIntBinaryOperator(IntBinaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalInt apply(int left, int right) {
-            try {
-                return OptionalInt.of(operator.applyAsInt(left, right));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link LongBinaryOperator} in a try-catch block.
      * <p>
@@ -1626,7 +1597,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromLongBinaryOperator((l, r) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link LongBinaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1634,24 +1605,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLongBinaryOperator fromLongBinaryOperator(LongBinaryOperator operator) {
-        return new CatchingLongBinaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingLongBinaryOperator implements OptionalLongBinaryOperator {
+
         private final LongBinaryOperator operator;
+
         CatchingLongBinaryOperator(LongBinaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalLong apply(long left, long right) {
-            try {
-                return OptionalLong.of(operator.applyAsLong(left, right));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalLong.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link DoubleBinaryOperator} in a try-catch block.
      * <p>
@@ -1661,7 +1631,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().fromDoubleBinaryOperator((l, r) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param operator
      *            the {@link DoubleBinaryOperator} to wrap, usually a lambda
      * @return wrapper that runs {@code operator} in a try-catch block
@@ -1669,24 +1639,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDoubleBinaryOperator fromDoubleBinaryOperator(DoubleBinaryOperator operator) {
-        return new CatchingDoubleBinaryOperator(operator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingDoubleBinaryOperator implements OptionalDoubleBinaryOperator {
+
         private final DoubleBinaryOperator operator;
+
         CatchingDoubleBinaryOperator(DoubleBinaryOperator operator) {
             this.operator = operator;
         }
+
         @Override
         public OptionalDouble apply(double left, double right) {
-            try {
-                return OptionalDouble.of(operator.applyAsDouble(left, right));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalDouble.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link Comparator} in a try-catch block.
      * <p>
@@ -1696,7 +1665,7 @@ public abstract class ExceptionHandler {
      * Wrapper then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().comparator((l, r) -> my_throwing_lambda).orElse(fallback)}
-     * 
+     *
      * @param <T>
      *            see {@link Comparator}
      * @param comparator
@@ -1706,24 +1675,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> OptionalComparator<T> comparator(Comparator<T> comparator) {
-        return new CatchingComparator<T>(comparator);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingComparator<T> implements OptionalComparator<T> {
+
         private final Comparator<T> comparator;
+
         CatchingComparator(Comparator<T> comparator) {
             this.comparator = comparator;
         }
+
         @Override
         public OptionalInt compare(T left, T right) {
-            try {
-                return OptionalInt.of(comparator.compare(left, right));
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-                return OptionalInt.empty();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Wraps {@link CloseableScope} in a try-catch block.
      * <p>
@@ -1733,7 +1701,7 @@ public abstract class ExceptionHandler {
      * Wrapper then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code try (var scope = Exceptions.silence().closeable(openSomething()))}
-     * 
+     *
      * @param closeable
      *            the {@link CloseableScope} to wrap
      * @return wrapper that runs {@code closeable} in a try-catch block
@@ -1741,23 +1709,23 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final CloseableScope closeable(CloseableScope closeable) {
-        return new CatchingCloseableScope(closeable);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     private final class CatchingCloseableScope implements CloseableScope {
+
         private final CloseableScope closeable;
+
         CatchingCloseableScope(CloseableScope closeable) {
             this.closeable = closeable;
         }
+
         @Override
         public void close() {
-            try {
-                closeable.close();
-            } catch (Throwable exception) {
-                if (!handle(exception))
-                    throw exception;
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
+
     /**
      * Runs {@link Runnable} in a try-catch block.
      * <p>
@@ -1767,20 +1735,16 @@ public abstract class ExceptionHandler {
      * This method then completes normally unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().run(() -> my_throwing_lambda)}
-     * 
+     *
      * @param runnable
      *            the {@link Runnable} to run, usually a lambda
      * @see <a href="https://noexception.machinezoo.com/">Tutorial</a>
      * @see Exceptions
      */
     public final void run(Runnable runnable) {
-        try {
-            runnable.run();
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Runs {@link Supplier} in a try-catch block.
      * <p>
@@ -1790,7 +1754,7 @@ public abstract class ExceptionHandler {
      * This method then returns empty {@link Optional} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().get(() -> my_throwing_lambda)}
-     * 
+     *
      * @param <T>
      *            see {@link Supplier}
      * @param supplier
@@ -1800,14 +1764,9 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final <T> Optional<T> get(Supplier<T> supplier) {
-        try {
-            return Optional.ofNullable(supplier.get());
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-            return Optional.empty();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Runs {@link IntSupplier} in a try-catch block.
      * <p>
@@ -1817,7 +1776,7 @@ public abstract class ExceptionHandler {
      * This method then returns empty {@link OptionalInt} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().getAsInt(() -> my_throwing_lambda)}
-     * 
+     *
      * @param supplier
      *            the {@link IntSupplier} to run, usually a lambda
      * @return an {@link OptionalInt} carrying {@code supplier} result or an empty {@link OptionalInt} if exception was caught
@@ -1825,14 +1784,9 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalInt getAsInt(IntSupplier supplier) {
-        try {
-            return OptionalInt.of(supplier.getAsInt());
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-            return OptionalInt.empty();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Runs {@link LongSupplier} in a try-catch block.
      * <p>
@@ -1842,7 +1796,7 @@ public abstract class ExceptionHandler {
      * This method then returns empty {@link OptionalLong} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().getAsLong(() -> my_throwing_lambda)}
-     * 
+     *
      * @param supplier
      *            the {@link LongSupplier} to run, usually a lambda
      * @return an {@link OptionalLong} carrying {@code supplier} result or an empty {@link OptionalLong} if exception was caught
@@ -1850,14 +1804,9 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalLong getAsLong(LongSupplier supplier) {
-        try {
-            return OptionalLong.of(supplier.getAsLong());
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-            return OptionalLong.empty();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Runs {@link DoubleSupplier} in a try-catch block.
      * <p>
@@ -1867,7 +1816,7 @@ public abstract class ExceptionHandler {
      * This method then returns empty {@link OptionalDouble} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().getAsDouble(() -> my_throwing_lambda)}
-     * 
+     *
      * @param supplier
      *            the {@link DoubleSupplier} to run, usually a lambda
      * @return an {@link OptionalDouble} carrying {@code supplier} result or an empty {@link OptionalDouble} if exception was caught
@@ -1875,14 +1824,9 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalDouble getAsDouble(DoubleSupplier supplier) {
-        try {
-            return OptionalDouble.of(supplier.getAsDouble());
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-            return OptionalDouble.empty();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Runs {@link BooleanSupplier} in a try-catch block.
      * <p>
@@ -1892,7 +1836,7 @@ public abstract class ExceptionHandler {
      * This method then returns empty {@link OptionalBoolean} unless {@link #handle(Throwable)} requests a rethrow.
      * <p>
      * Typical usage: {@code Exceptions.silence().getAsBoolean(() -> my_throwing_lambda)}
-     * 
+     *
      * @param supplier
      *            the {@link BooleanSupplier} to run, usually a lambda
      * @return an {@link OptionalBoolean} carrying {@code supplier} result or an empty {@link OptionalBoolean} if exception was caught
@@ -1900,12 +1844,6 @@ public abstract class ExceptionHandler {
      * @see Exceptions
      */
     public final OptionalBoolean getAsBoolean(BooleanSupplier supplier) {
-        try {
-            return OptionalBoolean.of(supplier.getAsBoolean());
-        } catch (Throwable exception) {
-            if (!handle(exception))
-                throw exception;
-            return OptionalBoolean.empty();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

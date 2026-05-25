@@ -11,7 +11,7 @@ import com.machinezoo.noexception.*;
  * {@code OptionalLongFunction} is typically obtained from {@link ExceptionHandler#fromLongFunction(LongFunction)},
  * in which case its return value is empty when the underlying {@link LongFunction} throws an exception.
  * See <a href="https://noexception.machinezoo.com/">noexception tutorial</a>.
- * 
+ *
  * @param <R>
  *            see {@link LongFunction}
  * @see ExceptionHandler#fromLongFunction(LongFunction)
@@ -19,12 +19,13 @@ import com.machinezoo.noexception.*;
  */
 @FunctionalInterface
 public interface OptionalLongFunction<R> extends LongFunction<Optional<R>> {
+
     /**
      * Variation of {@link LongFunction#apply(long)} that returns {@link Optional}.
      * If this {@code OptionalLongFunction} is obtained from {@link ExceptionHandler#fromLongFunction(LongFunction)},
      * the {@link Optional} will be empty only if the underlying {@link LongFunction} throws.
      * Otherwise the returned {@link Optional} just wraps the return value of underlying {@link LongFunction} (possibly {@code null}).
-     * 
+     *
      * @param value
      *            see {@link LongFunction#apply(long)}
      * @return {@link Optional} typically wrapping return value of {@link LongFunction#apply(long)},
@@ -34,11 +35,12 @@ public interface OptionalLongFunction<R> extends LongFunction<Optional<R>> {
      */
     @Override
     Optional<R> apply(long value);
+
     /**
      * Converts this {@code OptionalLongFunction} to plain {@link LongFunction} using default value.
      * The returned {@link LongFunction} will unwrap present value from the {@link Optional} if possible,
      * or return {@code result} if the {@link Optional} is empty.
-     * 
+     *
      * @param result
      *            default value to return instead of an empty {@link Optional}
      * @return plain {@link LongFunction} that either unwraps {@link Optional} or returns default value
@@ -46,13 +48,14 @@ public interface OptionalLongFunction<R> extends LongFunction<Optional<R>> {
      * @see Optional#orElse(Object)
      */
     default LongFunction<R> orElse(R result) {
-        return new DefaultLongFunction<R>(this, result);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
+
     /**
      * Converts this {@code OptionalLongFunction} to plain {@link LongFunction} using fallback {@link Supplier}.
      * The returned {@link LongFunction} will unwrap present value from the {@link Optional} if possible,
      * or fall back to calling {@code source} if the {@link Optional} is empty.
-     * 
+     *
      * @param source
      *            {@link Supplier} to query for fallback value when {@link Optional} is empty
      * @return plain {@link LongFunction} that either unwraps {@link Optional} or falls back to {@code source}
@@ -60,6 +63,6 @@ public interface OptionalLongFunction<R> extends LongFunction<Optional<R>> {
      * @see Optional#orElseGet(Supplier)
      */
     default LongFunction<R> orElseGet(Supplier<R> source) {
-        return new FallbackLongFunction<R>(this, source);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -2,8 +2,9 @@
 package com.machinezoo.noexception;
 
 final class PropagatingHandler extends ExceptionHandler {
-	@Override
-	public boolean handle(Throwable exception) {
-		return false;
-	}
+
+    @Override
+    public boolean handle(Throwable exception) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

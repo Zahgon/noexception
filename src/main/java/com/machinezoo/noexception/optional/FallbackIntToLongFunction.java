@@ -5,14 +5,18 @@ package com.machinezoo.noexception.optional;
 import java.util.function.*;
 
 final class FallbackIntToLongFunction implements IntToLongFunction {
+
     private final OptionalIntToLongFunction inner;
+
     private final LongSupplier source;
+
     public FallbackIntToLongFunction(OptionalIntToLongFunction inner, LongSupplier source) {
         this.inner = inner;
         this.source = source;
     }
+
     @Override
     public long applyAsLong(int value) {
-        return inner.apply(value).orElseGet(source);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }
